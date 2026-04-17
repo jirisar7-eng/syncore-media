@@ -6,6 +6,7 @@ import { HubCard } from '../components/ui/HubCard';
 import { getSession, UserContext } from '../AuthStore';
 import { GsyncButton } from '../components/GsyncButton';
 import { GitHubAPI } from '../api/GitHubAPI';
+import { VercelAPI } from '../api/VercelAPI';
 import { RepoPreview } from '../components/RepoPreview';
 import { MediaGallery } from '../components/MediaGallery';
 
@@ -21,7 +22,9 @@ export const HubPage = () => {
   const [refreshGallery, setRefreshGallery] = useState(0);
   const [totalDownloads, setTotalDownloads] = useState(0);
   const [syncProgress, setSyncProgress] = useState({ current: 0, total: 0, file: '' });
+  const [vercelStatus, setVercelStatus] = useState<string | null>(null);
   const gitApi = new GitHubAPI();
+  const vercelApi = new VercelAPI();
 
   useEffect(() => {
     const s = getSession();
@@ -52,11 +55,23 @@ export const HubPage = () => {
       );
 
       if (res.success) {
-        setGitStatus('✅ PROJEKT KOMPLETNĚ ZÁLOHOVÁN');
+        setGitStatus('✅ PROJEKT ZÁLOHOVÁN');
+        
+        // OKAMŽITĚ POTÉ trigger Vercel
+        setVercelStatus('🚀 SPOUŠTÍM VERCEL BUILD...');
+        const vRes = await vercelApi.trigger_deployment();
+        
+        if (vRes.success) {
+            setVercelStatus('✅ VERCEL BUILD TRIGGERED: Success');
+        } else {
+            setVercelStatus(`⚠️ VERCEL ERROR: ${vRes.error}`);
+        }
+
         setTimeout(() => {
             setGitStatus(null);
+            setVercelStatus(null);
             setSyncProgress({ current: 0, total: 0, file: '' });
-        }, 5000);
+        }, 8000);
       } else {
         setGitError(`${res.synced} OK, ${res.errors.length} ERROR`);
         setGitStatus(null);
@@ -273,6 +288,16 @@ export const HubPage = () => {
                     />
                 </div>
             </div>
+          )}
+
+          {vercelStatus && (
+            <motion.div 
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-[9px] font-black uppercase text-green-500 italic mt-1"
+            >
+                {vercelStatus}
+            </motion.div>
           )}
         </button>
       </section>
