@@ -20,6 +20,7 @@
       "src/AuthStore.ts",
       "src/api/GitHubAPI.ts",
       "src/backend/extractor.py",
+      "src/components/SearchInput.tsx",
       "src/components/MediaGallery.tsx",
       "src/components/RepoPreview.tsx",
       "src/components/ui/HubCard.tsx",
@@ -170,6 +171,12 @@
       "sid": "S23",
       "stav": "DOKONČENO",
       "desc": "Implementace Full System Sync Engine - kompletní zrcadlení projektu na GitHub"
+    },
+    {
+      "id": "SYN_DEPLOY_FIX_001",
+      "sid": "S24",
+      "stav": "DOKONČENO",
+      "desc": "Kritická oprava deploye - doplnění SearchInput.tsx do manifestu a synchronizace"
     }
   ],
   "locked_files": ["index.html", "src/pages/LandingPage.tsx"]
