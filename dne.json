@@ -20,10 +20,14 @@
       "src/AuthStore.ts",
       "src/api/GitHubAPI.ts",
       "src/backend/extractor.py",
-      "src/components/SearchInput.tsx",
+      "src/services/SearchEngine.ts",
       "src/components/MediaGallery.tsx",
       "src/components/RepoPreview.tsx",
       "src/components/ui/HubCard.tsx",
+      "src/components/SearchInput.tsx",
+      "src/components/PreviewCard.tsx",
+      "src/components/MediaCard.tsx",
+      "src/components/GsyncButton.tsx",
       "src/pages/HubPage.tsx",
       "src/pages/AdminPage.tsx",
       "src/pages/SearchPage.tsx",
@@ -177,6 +181,12 @@
       "sid": "S24",
       "stav": "DOKONČENO",
       "desc": "Kritická oprava deploye - doplnění SearchInput.tsx do manifestu a synchronizace"
+    },
+    {
+      "id": "SYN_CLEAN_BUILD_001",
+      "sid": "S25",
+      "stav": "DOKONČENO",
+      "desc": "Totální oprava projektu - re-indexace všech komponent a stránek, ověření integritry importů"
     }
   ],
   "locked_files": ["index.html", "src/pages/LandingPage.tsx"]
