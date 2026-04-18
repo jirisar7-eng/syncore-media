@@ -26,6 +26,7 @@
       "src/api/VercelAPI.ts",
       "src/api/SystemAPI.ts",
       "src/backend/extractor.py",
+      "src/components/Navbar.tsx",
       "src/components/GsyncButton.tsx",
       "src/components/MediaGallery.tsx",
       "src/components/RepoPreview.tsx",
@@ -34,6 +35,8 @@
       "src/components/PreviewCard.tsx",
       "src/components/ui/HubCard.tsx",
       "src/pages/HubPage.tsx",
+      "src/pages/DeployPage.tsx",
+      "src/pages/SystemPage.tsx",
       "src/pages/AdminPage.tsx",
       "src/pages/SearchPage.tsx",
       "src/pages/LandingPage.tsx",
@@ -61,6 +64,12 @@
       "sid": "S41",
       "stav": "DOKONČENO",
       "desc": "TOTAL BYPASS & FORCE UPLOAD - Modifikace všech souborů (hash bypass), total re-indexace a vynucený nukleární re-push"
+    },
+    {
+      "id": "SYN_SPLIT_COMMAND",
+      "sid": "S42",
+      "stav": "DOKONČENO",
+      "desc": "Restrukturalizace rozhraní - vytvoření Navbaru, rozdělení do specializovaných stránek (Deploy, Search, System) a zavedení multipage navigace"
     }
   ],
   "locked_files": ["index.html", "src/pages/LandingPage.tsx"]
