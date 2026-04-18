@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Github, ChevronLeft, Rocket, Loader2, CheckCircle2, RefreshCcw } from 'lucide-react';
 import { GitHubAPI } from '../api/GitHubAPI';
+import { SystemAPI } from '../api/SystemAPI';
 import { getSession } from '../AuthStore';
 import { RepoPreview } from '../components/RepoPreview';
 
@@ -12,6 +13,7 @@ export const AdminPage = () => {
     const [syncProgress, setSyncProgress] = useState({ current: 0, total: 0, file: '' });
     const session = getSession();
     const gitApi = new GitHubAPI();
+    const systemApi = new SystemAPI();
 
     useEffect(() => {
         if (!session || session.role !== 'admin') {
@@ -44,6 +46,28 @@ export const AdminPage = () => {
                 setRefreshTime(Date.now());
             }
             setResult(res);
+        } catch (e: any) {
+            setResult({ success: false, error: e.message });
+        } finally {
+            setPushing(false);
+            setSyncProgress({ current: 0, total: 0, file: '' });
+        }
+    };
+
+    const handleForcePush = async () => {
+        if (!window.confirm("TOTAL FORCE DEPLOY: Přepsat celý projekt na GitHubu?")) return;
+        setPushing(true);
+        setResult(null);
+        try {
+            const res = await systemApi.force_mass_upload(
+                "jirisar7-eng",
+                "syncore-media",
+                (current, total, file) => {
+                    setSyncProgress({ current, total, file });
+                }
+            );
+            setResult(res);
+            if (res.success) setRefreshTime(Date.now());
         } catch (e: any) {
             setResult({ success: false, error: e.message });
         } finally {
@@ -101,6 +125,14 @@ export const AdminPage = () => {
                         )}
                     </button>
 
+                    <button 
+                        onClick={handleForcePush}
+                        disabled={pushing}
+                        className="w-full mt-4 bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-black p-4 rounded-xl text-[10px] uppercase tracking-widest flex flex-col items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-red-500/10 border border-red-500/20"
+                    >
+                        🚀 FORCE TOTAL DEPLOY
+                    </button>
+
                     {result && (
                         <div className={`mt-6 p-4 rounded-lg font-mono border ${result.success ? 'bg-green-500/10 border-green-500/20 text-green-500 text-[10px]' : 'bg-red-500/20 border-red-500/50 text-red-500 text-[10px] break-all'}`}>
                             {result.success ? (
@@ -145,3 +177,4 @@ export const AdminPage = () => {
     );
 };
 /* ID-END: GUI_ADMIN_001 */
+// Force sync F-99-PROD
