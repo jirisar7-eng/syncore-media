@@ -1,0 +1,29 @@
+{
+  "logs": [
+    {
+      "id": "SYN_INIT_001",
+      "status": "completed",
+      "desc": "Project structure"
+    },
+    {
+      "id": "GUI_GATE_002",
+      "status": "completed",
+      "desc": "Main Landing Page Fixed"
+    },
+    {
+      "id": "ADM_001",
+      "status": "pending",
+      "desc": "Admin UI Construction"
+    },
+    {
+      "id": "AUTH_GATE_001",
+      "status": "completed",
+      "desc": "Implementace přihlášení a Admin profilu (Portal & Store)"
+    },
+    {
+      "id": "SYN_GIT_API_001",
+      "status": "completed",
+      "desc": "Implementace GitHub REST API modulu a Admin Push rozhraní"
+    }
+  ]
+}
