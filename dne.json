@@ -76,6 +76,12 @@
       "sid": "S43",
       "stav": "DOKONČENO",
       "desc": "Oprava chyby 'Failed to fetch' - migrace GitHub a Vercel komunikace na server-side proxy k obejití CORS restrikcí"
+    },
+    {
+      "id": "SYN_FINAL_ROUTING",
+      "sid": "S44",
+      "stav": "DOKONČENO",
+      "desc": "EMERGENCY ROUTING & AUTH REPAIR - Finalizace cest v App.tsx, implementace zobrazení tokenů v SystemPage a hardening API volání"
     }
   ],
   "locked_files": ["index.html", "src/pages/LandingPage.tsx"]
