@@ -38,6 +38,7 @@ export class SystemAPI {
 
             if (!syncRes.success) {
                 console.error("[SYSTEM] Sync failed during force upload:", syncRes.errors);
+                // 409 Secret Handling logic could be here if we parsed syncRes.errors
             }
 
             // 4. Trigger Vercel
