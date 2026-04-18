@@ -5,6 +5,9 @@ import { LoginPage } from './pages/LoginPage';
 import { SearchPage } from './pages/SearchPage';
 import { Dashboard } from './pages/Dashboard';
 import { HubPage } from './pages/HubPage';
+import { DeployPage } from './pages/DeployPage';
+import { SystemPage } from './pages/SystemPage';
+import { Navbar } from './components/Navbar';
 import { AdminPage } from './pages/AdminPage';
 
 export default function App() {
@@ -18,18 +21,23 @@ export default function App() {
 
   const renderRoute = () => {
     switch (route) {
-      case '#/': return <LandingPage />;
+      case '#/': 
+      case '#/hub': return <HubPage />;
       case '#/login': return <LoginPage />;
       case '#/search': return <SearchPage />;
       case '#/dashboard': return <Dashboard />;
-      case '#/hub': return <HubPage />;
+      case '#/deploy': return <DeployPage />;
+      case '#/system': return <SystemPage />;
       case '#/admin': return <AdminPage />;
-      default: return <LandingPage />;
+      default: return <HubPage />;
     }
   };
 
+  const showNavbar = !['#/login', '#/landing'].includes(route);
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#0f0f0f]">
+      {showNavbar && <Navbar />}
       {renderRoute()}
     </div>
   );
