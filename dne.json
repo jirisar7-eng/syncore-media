@@ -82,6 +82,18 @@
       "sid": "S44",
       "stav": "DOKONČENO",
       "desc": "EMERGENCY ROUTING & AUTH REPAIR - Finalizace cest v App.tsx, implementace zobrazení tokenů v SystemPage a hardening API volání"
+    },
+    {
+      "id": "SYN_PROGRESS_MONITOR",
+      "sid": "S45",
+      "stav": "DOKONČENO",
+      "desc": "Implementace ukazatele průběhu - přidání pulsní zelené lišty, dynamických stavových zpráv a automatické aktualizace repo preview po synchronizaci"
+    },
+    {
+      "id": "SYN_HARD_REWIRE",
+      "sid": "S46",
+      "stav": "DOKONČENO",
+      "desc": "EMERGENCY SYSTEM REWIRE - Globalizace force_mass_upload na window objekt, přímé propojení tlačítka v DeployPage a implementace nativního progress baru s přímou DOM manipulací"
     }
   ],
   "locked_files": ["index.html", "src/pages/LandingPage.tsx"]
