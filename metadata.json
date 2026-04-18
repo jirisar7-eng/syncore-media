@@ -1,0 +1,6 @@
+{
+  "name": "SynCore Media",
+  "description": "Serverless stahovač a vyhledávač médií pro Vercel a GitHub s administrací Synthesis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
