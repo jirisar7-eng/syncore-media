@@ -7,6 +7,7 @@ import { getSession, UserContext } from '../AuthStore';
 import { GsyncButton } from '../components/GsyncButton';
 import { GitHubAPI } from '../api/GitHubAPI';
 import { VercelAPI } from '../api/VercelAPI';
+import { SystemAPI } from '../api/SystemAPI';
 import { RepoPreview } from '../components/RepoPreview';
 import { MediaGallery } from '../components/MediaGallery';
 
@@ -25,6 +26,7 @@ export const HubPage = () => {
   const [vercelStatus, setVercelStatus] = useState<string | null>(null);
   const gitApi = new GitHubAPI();
   const vercelApi = new VercelAPI();
+  const systemApi = new SystemAPI();
 
   useEffect(() => {
     const s = getSession();
@@ -81,6 +83,42 @@ export const HubPage = () => {
       setGitStatus(null);
     } finally {
       setPushing(false);
+    }
+  };
+
+  const handleForceTotalDeploy = async () => {
+    if (!window.confirm("VAROVÁNÍ: Spouštíte TOTAL FORCE DEPLOY. Projekt bude kompletně přepsán na dálku. Pokračovat?")) return;
+    
+    setPushing(true);
+    setGitStatus('🚀 NUCLEAR STRIKE ACTIVE...');
+    setGitError(null);
+
+    try {
+        const res = await systemApi.force_mass_upload(
+            "jirisar7-eng",
+            "syncore-media",
+            (current, total, file) => {
+                setSyncProgress({ current, total, file });
+                setGitStatus(`FORCE SYNC [${current}/${total}]`);
+            }
+        );
+
+        if (res.success) {
+            setGitStatus('🔥 TOTAL PROJECT OVERWRITTEN');
+            setVercelStatus('✅ VERCEL DEPLOYMENT TRIGGERED');
+        } else {
+            setGitError(res.error || 'FORCE_DEPLOY_FAILED');
+            setGitStatus(null);
+        }
+    } catch (e: any) {
+        setGitError(e.message || 'CRITICAL_SYSTEM_FAIL');
+        setGitStatus(null);
+    } finally {
+        setPushing(false);
+        setTimeout(() => {
+            setGitStatus(null);
+            setVercelStatus(null);
+        }, 8000);
     }
   };
 
@@ -160,12 +198,22 @@ export const HubPage = () => {
           </p>
         </motion.div>
         
-        <button 
-          onClick={() => { localStorage.clear(); window.location.hash = '/login'; }}
-          className="p-3 bg-white/5 rounded-full hover:text-red-500 transition-colors border border-white/5 shadow-lg shadow-black/50"
-        >
-          <LogOut size={18} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={handleForceTotalDeploy}
+            disabled={pushing}
+            className="px-4 py-3 bg-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 transition-all border border-red-500 shadow-lg shadow-red-500/20 active:scale-95 disabled:opacity-50"
+          >
+            🚀 FORCE TOTAL DEPLOY
+          </button>
+          
+          <button 
+            onClick={() => { localStorage.clear(); window.location.hash = '/login'; }}
+            className="p-3 bg-white/5 rounded-full hover:text-red-500 transition-colors border border-white/5 shadow-lg shadow-black/50"
+          >
+            <LogOut size={18} />
+          </button>
+        </div>
       </header>
 
       {gitError && (
