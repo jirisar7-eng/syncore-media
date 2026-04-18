@@ -37,6 +37,31 @@ async function startServer() {
     }
   });
 
+  // API Route pro listování souborů (pro nukleární tlačítko)
+  app.get("/api/files/list", (req, res) => {
+    const getFiles = (dir: string, fileList: string[] = []) => {
+      const files = fs.readdirSync(dir);
+      files.forEach((file) => {
+        const name = path.join(dir, file);
+        if (fs.statSync(name).isDirectory()) {
+          if (!name.includes("node_modules") && !name.includes(".git") && !name.includes("dist")) {
+            getFiles(name, fileList);
+          }
+        } else {
+          fileList.push(path.relative(process.cwd(), name));
+        }
+      });
+      return fileList;
+    };
+
+    try {
+      const allFiles = getFiles(process.cwd());
+      res.json({ files: allFiles });
+    } catch (e) {
+      res.status(500).json({ error: "Chyba při listování souborů" });
+    }
+  });
+
   app.post("/api/extract", (req, res) => {
     const { url } = req.body;
     if (!url) {
