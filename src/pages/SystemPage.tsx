@@ -49,20 +49,49 @@ export const SystemPage = () => {
                 </div>
 
                 <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 bg-black/40 rounded-xl border border-white/5">
-                        <span className="text-[10px] uppercase font-bold text-white/40">GitHub Token</span>
-                        <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                            <span className="text-[9px] font-mono">ACTIVE</span>
+                    <div className="flex flex-col gap-2 p-3 bg-black/40 rounded-xl border border-white/5">
+                        <div className="flex justify-between items-center">
+                            <span className="text-[10px] uppercase font-bold text-white/40">GitHub Token</span>
+                            <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                                <span className="text-[9px] font-mono">ACTIVE</span>
+                            </div>
                         </div>
+                        <input 
+                            readOnly 
+                            type="password" 
+                            value={import.meta.env.VITE_GITHUB_TOKEN || 'MISSING'} 
+                            className="bg-transparent text-[10px] font-mono text-blue-400 focus:outline-none" 
+                        />
                     </div>
 
-                    <div className="flex justify-between items-center p-3 bg-black/40 rounded-xl border border-white/5">
-                        <span className="text-[10px] uppercase font-bold text-white/40">Vercel Secret</span>
-                        <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                            <span className="text-[9px] font-mono">ACTIVE</span>
+                    <div className="flex flex-col gap-2 p-3 bg-black/40 rounded-xl border border-white/5">
+                        <div className="flex justify-between items-center">
+                            <span className="text-[10px] uppercase font-bold text-white/40">Vercel Secret</span>
+                            <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                                <span className="text-[9px] font-mono">ACTIVE</span>
+                            </div>
                         </div>
+                        <input 
+                            readOnly 
+                            type="password" 
+                            value={import.meta.env.VITE_VERCEL_TOKEN || 'MISSING'} 
+                            className="bg-transparent text-[10px] font-mono text-blue-400 focus:outline-none" 
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-2 p-3 bg-black/40 rounded-xl border border-white/5">
+                        <div className="flex justify-between items-center">
+                            <span className="text-[10px] uppercase font-bold text-white/40">Project ID</span>
+                            <span className="text-[9px] font-mono opacity-50">SYNC-CORE</span>
+                        </div>
+                        <input 
+                            readOnly 
+                            type="text" 
+                            value={import.meta.env.VITE_VERCEL_PROJECT_ID || 'MISSING'} 
+                            className="bg-transparent text-[10px] font-mono text-purple-400 focus:outline-none" 
+                        />
                     </div>
 
                     <button 
