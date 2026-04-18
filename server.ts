@@ -62,6 +62,52 @@ async function startServer() {
     }
   });
 
+  // GitHub Proxy (To bypass client-side CORS/Network blocks)
+  app.post("/api/github/proxy", async (req, res) => {
+    const { url, method, body } = req.body;
+    const token = process.env.VITE_GITHUB_TOKEN;
+    if (!token) return res.status(500).json({ error: "Missing VITE_GITHUB_TOKEN" });
+
+    try {
+      const response = await fetch(url, {
+        method: method || "GET",
+        headers: {
+          "Authorization": `token ${token}`,
+          "Content-Type": "application/json",
+          "Accept": "application/vnd.github.v3+json",
+          "User-Agent": "Synthesis-Core-App"
+        },
+        body: (method && method !== "GET") ? JSON.stringify(body) : undefined
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // Vercel Proxy
+  app.post("/api/vercel/proxy", async (req, res) => {
+    const { url, method, body } = req.body;
+    const token = process.env.VITE_VERCEL_TOKEN;
+    if (!token) return res.status(500).json({ error: "Missing VITE_VERCEL_TOKEN" });
+
+    try {
+      const response = await fetch(url, {
+        method: method || "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: (method && method !== "GET") ? JSON.stringify(body) : undefined
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
   app.post("/api/extract", (req, res) => {
     const { url } = req.body;
     if (!url) {
