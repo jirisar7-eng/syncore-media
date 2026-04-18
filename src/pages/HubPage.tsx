@@ -198,22 +198,12 @@ export const HubPage = () => {
           </p>
         </motion.div>
         
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={handleForceTotalDeploy}
-            disabled={pushing}
-            className="px-4 py-3 bg-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 transition-all border border-red-500 shadow-lg shadow-red-500/20 active:scale-95 disabled:opacity-50"
-          >
-            🚀 FORCE TOTAL DEPLOY
-          </button>
-          
-          <button 
-            onClick={() => { localStorage.clear(); window.location.hash = '/login'; }}
-            className="p-3 bg-white/5 rounded-full hover:text-red-500 transition-colors border border-white/5 shadow-lg shadow-black/50"
-          >
-            <LogOut size={18} />
-          </button>
-        </div>
+        <button 
+          onClick={() => { localStorage.clear(); window.location.hash = '/login'; }}
+          className="p-3 bg-white/5 rounded-full hover:text-red-500 transition-colors border border-white/5 shadow-lg shadow-black/50"
+        >
+          <LogOut size={18} />
+        </button>
       </header>
 
       {gitError && (
@@ -378,3 +368,4 @@ export const HubPage = () => {
   );
 };
 /* ID-END: GUI_HUB_001 */
+// Force sync F-99-PROD
