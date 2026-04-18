@@ -12,6 +12,8 @@ export class GitHubAPI {
     private async fetchViaProxy(url: string, method: string = "GET", body?: any) {
         return fetch("/api/github/proxy", {
             method: "POST",
+            mode: 'cors',
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url, method, body })
         });
