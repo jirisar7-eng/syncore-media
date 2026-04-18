@@ -70,6 +70,12 @@
       "sid": "S42",
       "stav": "DOKONČENO",
       "desc": "Restrukturalizace rozhraní - vytvoření Navbaru, rozdělení do specializovaných stránek (Deploy, Search, System) a zavedení multipage navigace"
+    },
+    {
+      "id": "GH_FETCH_FIX",
+      "sid": "S43",
+      "stav": "DOKONČENO",
+      "desc": "Oprava chyby 'Failed to fetch' - migrace GitHub a Vercel komunikace na server-side proxy k obejití CORS restrikcí"
     }
   ],
   "locked_files": ["index.html", "src/pages/LandingPage.tsx"]
