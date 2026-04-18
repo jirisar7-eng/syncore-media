@@ -2,9 +2,32 @@
 import { GitHubAPI } from './GitHubAPI';
 import { VercelAPI } from './VercelAPI';
 
+declare global {
+  interface Window {
+    force_mass_upload: () => Promise<void>;
+  }
+}
+
 export class SystemAPI {
     private gitApi = new GitHubAPI();
     private vercelApi = new VercelAPI();
+
+    constructor() {
+        // Globalization for emergency rewire
+        window.force_mass_upload = async () => {
+            console.log("!!! FORCE UPLOAD STARTING !!!");
+            window.alert("Nahrávání zahájeno!");
+            const res = await this.force_mass_upload("jirisar7-eng", "syncore-media", (curr, tot) => {
+                const prog = Math.floor((curr / tot) * 100);
+                const bar = document.getElementById('upload-bar') as HTMLProgressElement;
+                if (bar) bar.value = prog;
+            });
+            if (!res.success) {
+                const log = document.getElementById('direct-error-log');
+                if (log) log.innerText = `FATAL ERROR: ${res.error}`;
+            }
+        };
+    }
 
     async force_mass_upload(
         owner: string, 
