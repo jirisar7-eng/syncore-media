@@ -9,6 +9,14 @@ export interface GitHubPushResponse {
 export class GitHubAPI {
     private token: string | null = import.meta.env.VITE_GITHUB_TOKEN || null;
 
+    private async fetchViaProxy(url: string, method: string = "GET", body?: any) {
+        return fetch("/api/github/proxy", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url, method, body })
+        });
+    }
+
     private b64EncodeUnicode(str: string) {
         return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
             function toSolidBytes(_match, p1) {
@@ -90,9 +98,7 @@ export class GitHubAPI {
         try {
             // 1. Try to get the current file SHA (needed for updates)
             let sha: string | undefined = undefined;
-            const getRes = await fetch(url, {
-                headers: { 'Authorization': `token ${this.token}` }
-            });
+            const getRes = await this.fetchViaProxy(url);
             
             if (getRes.ok) {
                 const data = await getRes.json();
@@ -100,17 +106,10 @@ export class GitHubAPI {
             }
 
             // 2. Perform the PUT (Create or Update)
-            const putRes = await fetch(url, {
-                method: 'PUT',
-                headers: { 
-                    'Authorization': `token ${this.token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message,
-                    content: this.b64EncodeUnicode(content), // Use UTF-8 safe encoder
-                    sha: sha 
-                })
+            const putRes = await this.fetchViaProxy(url, 'PUT', {
+                message,
+                content: this.b64EncodeUnicode(content), // Use UTF-8 safe encoder
+                sha: sha 
             });
 
             const result = await putRes.json();
@@ -144,12 +143,8 @@ export class GitHubAPI {
     }
 
     async get_repo_contents(owner: string, repo: string): Promise<any[]> {
-        if (!this.token) return [];
-        
         try {
-            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents`, {
-                headers: { 'Authorization': `token ${this.token}` }
-            });
+            const res = await this.fetchViaProxy(`https://api.github.com/repos/${owner}/${repo}/contents`);
             
             console.log(`[GITHUB] Content status for ${owner}/${repo}:`, res.status);
             
@@ -168,11 +163,8 @@ export class GitHubAPI {
     }
 
     async get_file_content(owner: string, repo: string, path: string): Promise<string | null> {
-        if (!this.token) return null;
         try {
-            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                headers: { 'Authorization': `token ${this.token}` }
-            });
+            const res = await this.fetchViaProxy(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
             if (res.status === 404) return null;
             if (!res.ok) return null;
             const data = await res.json();
@@ -187,12 +179,8 @@ export class GitHubAPI {
     }
 
     async get_last_commit(owner: string, repo: string): Promise<any> {
-        if (!this.token) return null;
-        
         try {
-            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`, {
-                headers: { 'Authorization': `token ${this.token}` }
-            });
+            const res = await this.fetchViaProxy(`https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`);
             
             if (!res.ok) return null;
             
