@@ -13,6 +13,8 @@ export class VercelAPI {
     private async fetchViaProxy(url: string, method: string = "POST", body?: any) {
         return fetch("/api/vercel/proxy", {
             method: "POST",
+            mode: 'cors',
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url, method, body })
         });
